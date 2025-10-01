@@ -1,0 +1,33 @@
+variables:
+  namespace: producao
+  api_version_service: v1
+  api_version_deployment: apps/v1
+  endpoint: bbmprd.azurecr.io
+  collection: it
+  projeto: internetbankingmicrofrontend
+  repositorio: root
+  port: 80 #é a porta que o service escuta, n da probe (9000). Atenção ao mudar, se o service morrer pode precisar configurar o ip no waf de novo
+  LIVENESSPROBE_DELAY: 30
+  LIVENESSPROBE_PERIOD: 300
+  READINESSPROBE_DELAY: 30
+  READINESSPROBE_PERIOD: 300
+  NODE_ENV: production
+  API: https://api.bocombbm.com.br
+  buildnumber: $(Build.BuildNumber)
+  buildversion: root $(Build.SourceBranch)|$(Build.BuildNumber)
+  HOTJAR_ID: 935513
+  ANALYTICS_ID: UA-40655017-5
+  DYNATRACE_ID: 2cefb4455583ab0b
+  DYNATRACE_KEY: bf79940fux
+  DYNATRACE_URL: https://js-cdn.dynatrace.com/jstag/157944990f8
+  SHOW_WIRETRANSFER_CONTENT_MOBILE: false
+  SHOW_STATEMENTS_CONTENT_MOBILE: false
+  IMPERSONATE_REDIRECT_URL: http://ibusermanagementfront.bocombbm.com.br/search-person
+  ERROR_LOG_URL: https://bbmlog.azurewebsites.net/api/entry?code=SaxvwINEk71U1r7No8LF3JcileMAKuPqqZQ82ieGyzE9YChml6QV4w==
+  SHOW_SUITABILITY_CONTENT_MOBILE: true
+  SHOW_EDITABLE_REGISTRATION_CONTENT_MOBILE: true
+  ENV_URL: https://ib.bocombbm.com.br/
+  imagePullSecrets: bbm-acr-secret
+  URL_IB_ROOT: ib.bocombbm.com.br
+  URL_IB_MONOLITO: ib.bocombbm.com.br/monolito
+  DISABLE_DATE_END_OF_YEAR_UTC_MILISECOND: 1735786740000

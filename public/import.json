@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@bocombbm/root-config": "//${URL_IB_ROOT}/bocombbm-root-config.js",
+    "@bocombbm/mf-ib": "//${URL_IB_MONOLITO}/bocombbm-mf-ib.js"    
+  }
+}

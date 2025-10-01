@@ -1,0 +1,1 @@
+﻿"${DYNATRACE_URL}/${DYNATRACE_KEY}/${DYNATRACE_ID}_complete.js"

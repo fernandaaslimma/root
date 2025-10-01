@@ -1,0 +1,15 @@
+variables:
+  collection: it
+  projeto: internetbankingmfe
+  repositorio: root
+  organization: "BocomBBM"
+  collection.min: "it"
+  project: $(System.TeamProject)
+  project.min: $[lower(replace(variables['System.TeamProject'],' ',''))]
+  repository: $(Build.Repository.Name)
+  repository.min: "root"
+  buildnumber: $(Build.BuildNumber)
+  isMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  buildConfiguration: release
+  acrEndpoint: "acr dev"
+  projectKey: "internetbankingfront"

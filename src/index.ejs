@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="/env-front-version.js"></script>
+  <script src="/hotjar.js"></script>
+  <script type="text/javascript" src="/dynatrace.js" crossorigin="anonymous" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.7/runtime.min.js"></script>
+
+  <% if (isLocal) { %>
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self' https: localhost:*;
+        script-src 'unsafe-inline' 'unsafe-eval' localhost:* https://cdn.jsdelivr.net https://ib.dev.bocombbm.com.br https://ib.hom.bocombbm.com.br https://ib.bocombbm.com.br https://script.hotjar.com https://static.hotjar.com;
+        connect-src http: localhost:* ws://localhost:*; 
+        style-src 'unsafe-inline' http:; 
+        object-src 'none';
+        img-src 'self' http: data:
+        ">
+    <% } else { %>
+      <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self' https:;
+        script-src 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://ib.dev.bocombbm.com.br https://ib.hom.bocombbm.com.br https://ib.bocombbm.com.br https://script.hotjar.com https://static.hotjar.com;
+        connect-src 'self' https: wss:; 
+        style-src 'self' 'unsafe-inline' https:; 
+        object-src 'none';
+        img-src 'self' https: data:
+        ">
+      <% } %>
+
+        <meta name="importmap-type" content="systemjs-importmap" />
+        <script type="systemjs-importmap">
+    {
+      "imports": {
+        "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.dev.js",
+        "react": "https://cdn.jsdelivr.net/npm/react@16.8.6/umd/react.production.min.js",
+        "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.8.6/umd/react-dom.production.min.js"
+      }
+    }
+  </script>
+        <link rel="preload" href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
+          as="script">
+        <% if (isLocal) { %>
+          <script type="systemjs-importmap">
+    {
+      "imports": {
+        "@bocombbm/root-config": "//localhost:9000/bocombbm-root-config.js",
+        "@bocombbm/mf-ib": "//localhost:8400/bocombbm-mf-ib.js"
+      }
+    }
+  </script>
+          <% } else { %>
+            <script src="/import.json" type="systemjs-importmap"></script>
+            <% } %>
+              <script
+                src="https://cdn.jsdelivr.net/npm/import-map-overrides@2.2.0/dist/import-map-overrides.js"></script>
+              <% if (isLocal) { %>
+                <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.js"></script>
+                <% } else { %>
+                  <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.js"></script>
+                  <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.js"></script>
+                  <% } %>
+</head>
+
+<body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <main></main>
+  <% if (!isLocal) { %>
+    <script src="/env-prod-monolito.js"></script>
+    <% } %>
+      <script>
+        System.import('@bocombbm/root-config');
+      </script>
+      <import-map-overrides-full show-when-local-storage="devtools" dev-libs></import-map-overrides-full>
+</body>
+
+</html>

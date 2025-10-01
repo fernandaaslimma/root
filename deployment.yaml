@@ -1,0 +1,95 @@
+apiVersion: #{api_version_service}#
+kind: Service
+metadata:
+  name: service-#{collection}#-#{projeto}#-#{repositorio}#
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"  
+  labels:
+    app: #{collection}#-#{projeto}#-#{repositorio}#
+spec:
+  type: LoadBalancer
+  ports:
+    - port: #{port}#
+      targetPort: 9000
+  selector:
+    app: #{collection}#-#{projeto}#-#{repositorio}#
+
+---
+apiVersion: #{api_version_deployment}#
+kind: Deployment
+metadata:
+  name: deployment-#{collection}#-#{projeto}#-#{repositorio}#
+  labels:
+    app: #{collection}#-#{projeto}#-#{repositorio}#
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: #{collection}#-#{projeto}#-#{repositorio}#
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: #{collection}#-#{projeto}#-#{repositorio}#
+    spec:
+      containers:
+        - name: #{collection}#-#{projeto}#-#{repositorio}#
+          image: #{endpoint}#/#{collection}#/#{projeto}#/#{repositorio}#:#{buildnumber}#
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            initialDelaySeconds: #{LIVENESSPROBE_DELAY}#
+            periodSeconds: #{LIVENESSPROBE_PERIOD}#
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            initialDelaySeconds: #{READINESSPROBE_DELAY}#
+            periodSeconds: #{READINESSPROBE_PERIOD}#
+          env:
+            - name: NODE_ENV
+              value: "#{NODE_ENV}#"
+            - name: API
+              value: "#{API}#"
+            - name: PORT
+              value: "#{port}#"
+            - name: FRONT_VERSION
+              value: "#{buildversion}#"
+            - name: HOTJAR_ID
+              value: "#{HOTJAR_ID}#"
+            - name: ANALYTICS_ID
+              value: "#{ANALYTICS_ID}#"
+            - name: DYNATRACE_ID
+              value: "#{DYNATRACE_ID}#"
+            - name: DYNATRACE_KEY
+              value: "#{DYNATRACE_KEY}#"
+            - name: DYNATRACE_URL
+              value: "#{DYNATRACE_URL}#"
+            - name: SHOW_WIRETRANSFER_CONTENT_MOBILE
+              value: "#{SHOW_WIRETRANSFER_CONTENT_MOBILE}#"
+            - name: SHOW_STATEMENTS_CONTENT_MOBILE
+              value: "#{SHOW_STATEMENTS_CONTENT_MOBILE}#"
+            - name: IMPERSONATE_REDIRECT_URL
+              value: "#{IMPERSONATE_REDIRECT_URL}#"
+            - name: ERROR_LOG_URL
+              value: "#{ERROR_LOG_URL}#"
+            - name: SHOW_SUITABILITY_CONTENT_MOBILE
+              value: "#{SHOW_SUITABILITY_CONTENT_MOBILE}#"
+            - name: SHOW_EDITABLE_REGISTRATION_CONTENT_MOBILE
+              value: "#{SHOW_EDITABLE_REGISTRATION_CONTENT_MOBILE}#"
+            - name: ENV_URL
+              value: "#{ENV_URL}#"
+            - name: URL_IB_ROOT
+              value: "#{URL_IB_ROOT}#"
+            - name: URL_IB_MONOLITO
+              value: "#{URL_IB_MONOLITO}#"
+            - name: DISABLE_DATE_END_OF_YEAR_UTC_MILISECOND
+              value: "#{DISABLE_DATE_END_OF_YEAR_UTC_MILISECOND}#"                     
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: "#{imagePullSecrets}#"
